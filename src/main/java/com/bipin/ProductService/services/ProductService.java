@@ -1,4 +1,4 @@
-package com.bipin.ProductService;
+package com.bipin.ProductService.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +52,12 @@ public class ProductService {
 		repo.deleteById(id);
 
 		return true;
+	}
+
+	public List<Product> findProductByName(String name) {
+
+		return repo.findProductByName(name);
+
 	}
 
 }

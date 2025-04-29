@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bipin.ProductService.ProductService;
 import com.bipin.ProductService.dto.FakeProductDto;
 import com.bipin.ProductService.model.Product;
 import com.bipin.ProductService.services.FakeStoreService;
+import com.bipin.ProductService.services.ProductService;
 
 @RestController
 public class ProductController {
@@ -61,6 +61,13 @@ public class ProductController {
 		boolean deleteProduct = ps.deleteProduct(id);
 
 		return ResponseEntity.ok(deleteProduct);
+	}
+
+	@GetMapping("/product/type/{name}")
+	public ResponseEntity<List<Product>> findProductByName(@PathVariable("name") String name) {
+		List<Product> findProductByName = ps.findProductByName(name);
+
+		return ResponseEntity.ok(findProductByName);
 	}
 
 //	@GetMapping("/product/{id}")

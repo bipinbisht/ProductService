@@ -4,35 +4,26 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Entity
-public class Product {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-	private String name;
-	private String category;
+public class Product extends BaseModel {
+
+	@ManyToOne
+	private Category category;
 	private double price;
-	private String description;
+
 	private double rating;
 	private int quantity;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getCategory() {
+	
+	
+	
+	
+	public Category getCategory() {
 		return category;
 	}
-	public void setCategory(String category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 	public double getPrice() {
@@ -40,12 +31,6 @@ public class Product {
 	}
 	public void setPrice(double price) {
 		this.price = price;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	public double getRating() {
 		return rating;
@@ -61,4 +46,5 @@ public class Product {
 	}
 	
 	
+
 }

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bipin.ProductService.dto.ProductProjection;
 import com.bipin.ProductService.exception.ProductNotFoundException;
 import com.bipin.ProductService.model.Product;
 import com.bipin.ProductService.repo.ProductRepo;
@@ -26,7 +27,7 @@ public class ProductService {
 		Optional<Product> product = repo.findById(id);
 
 		if (product.isEmpty()) {
-			throw new ProductNotFoundException("Product not found !! 404");
+			throw new ProductNotFoundException("Product with id " + id + " not found !! 404");
 		} else {
 			return product.get();
 		}
@@ -58,6 +59,10 @@ public class ProductService {
 
 		return repo.findProductByName(name);
 
+	}
+
+	public ProductProjection getProductByProjection(String productName) {
+		return repo.findFirstByName(productName);
 	}
 
 }

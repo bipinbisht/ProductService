@@ -3,13 +3,14 @@ package com.bipin.ProductService.model;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 
 @Entity
 public class Category extends BaseModel {
 	
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_id")
 	List<Product> products;
 

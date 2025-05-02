@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bipin.ProductService.dto.FakeProductDto;
+import com.bipin.ProductService.dto.ProductProjection;
 import com.bipin.ProductService.model.Product;
 import com.bipin.ProductService.services.FakeStoreService;
 import com.bipin.ProductService.services.ProductService;
@@ -70,6 +71,47 @@ public class ProductController {
 		return ResponseEntity.ok(findProductByName);
 	}
 
+	// projection api
+	@GetMapping("/product/projection/{name}")
+	public ResponseEntity<ProductProjection> getProductByName(@PathVariable("name") String pname) {
+
+		ProductProjection productByProjection = ps.getProductByProjection(pname);
+		return ResponseEntity.ok(productByProjection);
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 //	@GetMapping("/product/{id}")
 //	public FakeProductDto getProduct(@PathVariable("id") int id) {
 //		FakeProductDto singleProduct = fss.getSingleProduct(id);

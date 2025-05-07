@@ -1,22 +1,21 @@
 package com.bipin.ProductService.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Data;
 
 @Entity
 public class Product extends BaseModel {
 
-	@ManyToOne
-	private Category category;
+	
 	private double price;
 
 	private double rating;
 	private int quantity;
 	
+	@ManyToOne
+	@JoinColumn(name = "category_id")  // must match Category.java's @JoinColumn
+	private Category category;
 	
 	
 	

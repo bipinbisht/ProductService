@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.bipin.ProductService.dto.ProductProjection;
 import com.bipin.ProductService.exception.ProductNotFoundException;
+import com.bipin.ProductService.model.Category;
 import com.bipin.ProductService.model.Product;
 import com.bipin.ProductService.repo.ProductRepo;
 
@@ -16,6 +17,9 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepo repo;
+
+	@Autowired
+	private CategoryService cs;
 
 	public Product addProduct(Product product) {
 		System.out.println(product);
@@ -63,6 +67,22 @@ public class ProductService {
 
 	public ProductProjection getProductByProjection(String productName) {
 		return repo.findFirstByName(productName);
+	}
+
+	public List<Product> getProductByCategory(int id) {
+
+		List<Product> productsByCategory = cs.getProductsByCategory(id);
+		if (productsByCategory.isEmpty()) {
+			throw new ProductNotFoundException("Not product found with category id " + id);
+		}
+		return productsByCategory;
+	}
+
+	public Product removeCategoryFromProduct(int productId) {
+		Product product = getProduct(productId);
+		product.setCategory(null);
+
+		return repo.save(product);
 	}
 
 }

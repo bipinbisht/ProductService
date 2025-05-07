@@ -31,4 +31,11 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(er, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(value = DublicateCategoryNameException.class)
+	public ResponseEntity<ErrorResponse> handleDublicateCategoryNameException(DublicateCategoryNameException ex) {
+		ErrorResponse er = new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+
+		return new ResponseEntity<>(er, HttpStatus.BAD_REQUEST);
+	}
+
 }

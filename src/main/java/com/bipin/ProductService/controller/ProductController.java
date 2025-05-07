@@ -3,8 +3,6 @@ package com.bipin.ProductService.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bipin.ProductService.dto.FakeProductDto;
 import com.bipin.ProductService.dto.ProductProjection;
+import com.bipin.ProductService.dto.ProductResponseDTO;
 import com.bipin.ProductService.model.Product;
 import com.bipin.ProductService.services.FakeStoreService;
 import com.bipin.ProductService.services.ProductService;
@@ -27,6 +25,20 @@ public class ProductController {
 	private FakeStoreService fss;
 	@Autowired
 	private ProductService ps;
+
+	@GetMapping("product/category/{id}")
+	public ResponseEntity<List<ProductResponseDTO>> getProductsByCategory(@PathVariable("id") int id) {
+		List<Product> productByCategory = ps.getProductByCategory(id);
+
+		List<ProductResponseDTO> resposne = productByCategory.stream().map(product -> {
+			ProductResponseDTO pr = new ProductResponseDTO(product.getName(), product.getDescription(),
+					product.getPrice(), product.getRating());
+			return pr;
+
+		}).toList();
+
+		return ResponseEntity.ok(resposne);
+	}
 
 	@PostMapping("/product")
 	public ResponseEntity<Product> addProduct(@RequestBody Product product) {
@@ -79,39 +91,18 @@ public class ProductController {
 		return ResponseEntity.ok(productByProjection);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@PutMapping("/product/{id}/remove-category")
+	public ResponseEntity<ProductResponseDTO> removeCategoryFromProduct(@PathVariable("id") int productId) {
+		Product productwihoutCategory = ps.removeCategoryFromProduct(productId);
+		ProductResponseDTO response = new ProductResponseDTO();
+		response.setProductDescription(productwihoutCategory.getDescription());
+		response.setProductName(productwihoutCategory.getName());
+		response.setProductPrice(productwihoutCategory.getPrice());
+		response.setRating(productwihoutCategory.getRating());
+
+		return ResponseEntity.ok(response);
+	}
+
 //	@GetMapping("/product/{id}")
 //	public FakeProductDto getProduct(@PathVariable("id") int id) {
 //		FakeProductDto singleProduct = fss.getSingleProduct(id);

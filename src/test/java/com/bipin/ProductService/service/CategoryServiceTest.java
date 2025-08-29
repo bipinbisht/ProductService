@@ -15,6 +15,7 @@ import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.bipin.ProductService.dto.CategoryRequestDTO;
+import com.bipin.ProductService.exception.DublicateCategoryNameException;
 import com.bipin.ProductService.model.Category;
 import com.bipin.ProductService.model.Product;
 import com.bipin.ProductService.repo.CategoryRepo;
@@ -79,6 +80,26 @@ public class CategoryServiceTest {
 		Assertions.assertEquals(savedCategory.getDescription(), createdCategory.getDescription());
 		verify(crepo).findByName("Electronics");
 		verify(crepo).save(any(Category.class));
+
+	}
+	
+	@Test
+	void addAddCategory_DublicateName_ThrowsException() {
+		// setup and input creation
+		CategoryRequestDTO catdto = new CategoryRequestDTO("Electronics", "This is Electronics category");
+		Category savedCategory = new Category();
+		savedCategory.setId(1);
+		savedCategory.setName("Electronics");
+		savedCategory.setDescription("This is Electronics category");
+		// mocking
+		when(crepo.findByName("Electronics")).thenReturn(Optional.of(savedCategory));
+
+		// call the actual method to be tested
+		Assertions.assertThrows(DublicateCategoryNameException.class, () -> {
+			categoryService.addCategory(catdto);
+		});
+		verify(crepo).findByName("Electronics");
+		verify(crepo, never()).save(any(Category.class));
 
 	}
 

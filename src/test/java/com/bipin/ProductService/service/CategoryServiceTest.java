@@ -15,6 +15,7 @@ import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.bipin.ProductService.dto.CategoryRequestDTO;
+import com.bipin.ProductService.exception.CategoryNotFoundException;
 import com.bipin.ProductService.exception.DublicateCategoryNameException;
 import com.bipin.ProductService.model.Category;
 import com.bipin.ProductService.model.Product;
@@ -121,6 +122,31 @@ public class CategoryServiceTest {
 		Assertions.assertEquals("Electronics", categories.get(0).getName());
 		Assertions.assertEquals("Books", categories.get(1).getName());
 		verify(crepo).findAll();
+	}
+	
+	@Test
+	void getCategoryById_Success() {
+		//mocking and using the setUp method object
+		when((crepo.findById(1))).thenReturn(Optional.of(category));
+		// call the actual method to be tested
+		Category foundCategory = categoryService.getCategoryById(1);
+		// verification
+		Assertions.assertNotNull(foundCategory);
+		Assertions.assertEquals(category.getId(), foundCategory.getId());
+		Assertions.assertEquals(category.getName(), foundCategory.getName());
+		Assertions.assertEquals(category.getDescription(), foundCategory.getDescription());
+		verify(crepo).findById(1);
+	}
+	
+	@Test
+	void getCategoryById_NotFound_ThrowsException() {
+		//mocking 
+		when((crepo.findById(1))).thenReturn(Optional.empty());
+		// call the actual method to be tested
+		Assertions.assertThrows(CategoryNotFoundException.class, ()->{
+			categoryService.getCategoryById(1);
+		});
+		verify(crepo).findById(1);
 	}
 
 }
